@@ -1,10 +1,9 @@
+
 package com.calebms.openflix.data.remote.tmdb
 
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-
-
 
 data class TmdbSearchResponse(
     val results: List<TmdbSearchResult>
@@ -35,25 +34,23 @@ data class TmdbEpisodeDetail(
     val still_path: String?
 )
 
-
 interface TmdbApiService {
-
 
     @GET("3/search/movie")
     suspend fun searchMovie(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("year") year: Int? = null
+        @Query("year") year: Int? = null,
+        @Query("include_adult") includeAdult: Boolean = true
     ): TmdbSearchResponse
-
 
     @GET("3/search/tv")
     suspend fun searchTvShow(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("first_air_date_year") year: Int? = null
+        @Query("first_air_date_year") year: Int? = null,
+        @Query("include_adult") includeAdult: Boolean = true
     ): TmdbSearchResponse
-
 
     @GET("3/tv/{tv_id}/season/{season_number}")
     suspend fun getSeasonDetails(
