@@ -1,0 +1,41 @@
+
+name: Compilar OpenFlix APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar Android SDK 37
+        run: sdkmanager "platforms;android-37"
+
+      - name: Preparar Gradle
+        run: chmod +x gradlew
+
+      - name: Compilar APK
+        run: ./gradlew assembleGithubRelease
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenFlix-Adult-Metadata
+          path: app/build/outputs/apk/github/release/*.apk
+          if-no-files-found: error
