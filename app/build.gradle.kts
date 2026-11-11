@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -7,6 +8,7 @@ plugins {
 
 android {
     namespace = "com.calebms.openflix"
+
     compileSdk {
         version = release(37)
     }
@@ -27,9 +29,12 @@ android {
         }
 
         release {
+            signingConfig = signingConfigs.getByName("debug")
+
             optimization {
                 enable = true
             }
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,16 +50,19 @@ android {
             optimization {
                 enable = true
             }
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         buildConfig = true
         compose = true
@@ -65,19 +73,17 @@ android {
     productFlavors {
         create("playstore") {
             dimension = "distribution"
-
             buildConfigField("Boolean", "ENABLE_IN_APP_UPDATER", "false")
         }
+
         create("github") {
             dimension = "distribution"
-
             buildConfigField("Boolean", "ENABLE_IN_APP_UPDATER", "true")
         }
     }
 
     packaging {
         jniLibs {
-            // Forces native libraries to remain uncompressed and correctly 16 KB aligned inside the APK
             useLegacyPackaging = false
         }
     }
@@ -97,34 +103,43 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
     val roomVersion = "2.8.4"
+
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+
     implementation(libs.androidx.documentfile)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
     implementation("io.coil-kt:coil-svg:2.7.0")
+
     implementation(libs.androidx.media)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.session)
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("io.ktor:ktor-server-core:${ktorVersion}")
-    implementation("io.ktor:ktor-server-cio:${ktorVersion}")
-    implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
-    implementation("io.ktor:ktor-server-cors:${ktorVersion}")
-    implementation("io.ktor:ktor-server-content-negotiation:${ktorVersion}")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
+
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-cio:$ktorVersion")
+    implementation("io.ktor:ktor-server-websockets:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("org.videolan.android:libvlc-all:3.6.3")
     implementation("androidx.media:media:1.7.0")
