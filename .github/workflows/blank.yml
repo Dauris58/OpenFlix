@@ -23,6 +23,8 @@ jobs:
 
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
 
       - name: Instalar Android SDK 37
         run: sdkmanager "platforms;android-37"
@@ -39,3 +41,4 @@ jobs:
           name: OpenFlix-Adult-Metadata
           path: app/build/outputs/apk/github/release/*.apk
           if-no-files-found: error
+          
